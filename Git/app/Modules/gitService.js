@@ -1,9 +1,9 @@
 ﻿(function () {
 
-    angular.module('git', []);
+    angular.module('gitService', []);
 
     /*  */
-    function gitService() {
+    function gitService($http) {
         var gitLog = {
             "546aab1fccd3ffa3d1b71c6f8aac975f28b86d12": {
                 "HASH": "546aab1fccd3ffa3d1b71c6f8aac975f28b86d12", "PARENTS": ["8bd3000b7cbf427088d49f9ea270e4da804987e3"],
@@ -47,13 +47,56 @@
             }
         };
 
+        this.data = {};
+        this.index = {}
+        this.edges = [];
 
+        this.loadData = function (url) {
+            var self = this;
+            var promise = $http({ method: "GET", url: url }).
+              then(function (response) {
+                  self.data = response.data;
+                  self.setIndex();
+                  self.setEdges();
+                  //console.log(self.data);
+              }, function (response) {
+
+              });
+            return promise;
+        };
+
+        this.setIndex = function () {
+            var self = this;
+            self.index = null;
+            self.index = {};
+            var i = 0;
+            for (var key in self.data) {
+                self.index[key] = i;
+                self.index[key].index = i;
+                i++;
+            }
+        };
+
+        this.setEdges = function () {
+            var self = this;
+            self.edges.length = 0;
+            var i = 0;
+            for (var key in self.data) {
+                var item = self.data[key];
+                for (var n = 0; n < item.PARENTS.length; n++) {
+                    var parentKey = item.PARENTS[n];
+                    //console.log(parentKey);
+                    self.edges.push([i, self.index[parentKey]]);
+                }
+                i++;
+            }
+        };
 
         this.test = function () {
             return "module: 'git', service: 'gitService', function: 'test'"
         };
     }
 
-    angular.module('git').service('gitService', gitService);
+    angular.module('gitService').service('gitService', gitService);
 
 })();

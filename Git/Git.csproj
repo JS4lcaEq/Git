@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <Content Include="data.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -77,13 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
-    <Content Include="app\app_perceptron.js" />
     <Content Include="app\component.js" />
     <Content Include="app\Modules\data.js" />
-    <Content Include="app\Modules\dropDown.js" />
-    <Content Include="app\Modules\git.js" />
+    <Content Include="app\Modules\gitDirective.js" />
+    <Content Include="app\Modules\gitService.js" />
     <Content Include="app\route.js" />
-    <Content Include="app\treeService.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />

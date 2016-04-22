@@ -18,21 +18,8 @@
       <script src="/Scripts/respond.min.js"></script>
     <![endif]-->
     <style>
-        .l1 {
-            margin-left: 20px;
-        }
 
-        .l2 {
-            margin-left: 40px;
-        }
 
-        .l3 {
-            margin-left: 60px;
-        }
-
-        #test, #test div, #git {
-            border: solid 1px #000000;
-        }
     </style>
 </head>
 <body>
@@ -62,39 +49,19 @@
 
             <div class="row">
                 <div class="col-lg-7 form-inline">
-                    <button ng-click="ctrl.generate(ctrl.testDataLength)" class="form-control">generate</button>
-                    <input type="text" ng-model="ctrl.testDataLength" class="form-control" />
-                    <button ng-click="ctrl.sort(ctrl.sortField)" class="form-control">sort</button>
-                    <select ng-model="ctrl.sortField" class="form-control">
-                        <option value="id">id</option>
-                        <option value="name">name</option>
-                        <option value="number">number</option>
-                    </select>
-                    <button  ng-click="ctrl.renderGit(300, 10)" class="form-control">git</button>
+                    <button ng-click="ctrl.renderGit(300, 10)" class="form-control">git</button>
                 </div>
                 <div class="col-lg-5">
-                    <drop-down 
-                               src="ctrl.testData" 
-                               length="'10'" 
-                               text-fieldname="'name'" 
-                               model="ctrl.model" 
-                               on-select="ctrl.onSelect(ctrl.model)"
-                               input="ctrl.input"
-                               on-inputchange="ctrl.onInputchange(ctrl.input)"></drop-down>
                 </div>
             </div>
         </form>
         <hr />
-        <canvas id='canvas'>
-            Обновите браузер
-        </canvas>
-    <canvas id="git"></canvas>
 
+        <git-directive></git-directive>
         <pre>
 location.path() = "{{ctrl.location.path()}}"
 ctrl.model = {{ctrl.model}}
-{{ctrl.gitIndex}}
-{{ctrl.gitEdges}}
+
         </pre>
         ng-view[<ng-view>view</ng-view>]ng-view
         <a href="#/Book/Moby">Moby</a>
@@ -103,12 +70,6 @@ ctrl.model = {{ctrl.model}}
             <p>&copy; VAsoft 2016</p>
         </footer>
     </div> <!-- /container -->
-    <script id="tmpl" type="text/ng-template">
-        <span ng-click="ctrl.treeOpen(item.id)">{{item.nm}}[{{item.idp}}]({{item.level}})</span>
-        <ul ng-if="ctrl.tree.branches[item.id] && ctrl.tree.branches[item.id].opened">
-            <li ng-repeat="item in ctrl.tree.branches[item.id].items" ng-include="'tmpl'"></li>
-        </ul>
-    </script>
 
     <script src="/Scripts/jquery-2.2.3.min.js"></script>
     <script src="/Scripts/bootstrap.min.js"></script>
@@ -117,12 +78,12 @@ ctrl.model = {{ctrl.model}}
     <script src="/Scripts/angular.min.js"></script>
     <script src="/Scripts/angular-sanitize.min.js"></script>
     <script src="Scripts/angular-route.min.js"></script>
+    <script src="app/Modules/gitService.js"></script>
+    <script src="app/Modules/gitDirective.js"></script>
     <script src="/app/app.js"></script>
     <script src="/app/route.js"></script>
-    <script src="app/component.js"></script>
-    <script src="app/Modules/data.js"></script>
-    <script src="app/Modules/dropDown.js"></script>
-    <script src="app/treeService.js"></script>
+
+
     <script>angular.bootstrap("html", ['app']);</script>
 </body>
 </html>
