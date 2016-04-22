@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-controller="MainCtrl as ctrl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="/favicon.ico">-->
+    <title>Double Multiple Select</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/Scripts/html5shiv.min.js"></script>
+      <script src="/Scripts/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .l1 {
+            margin-left: 20px;
+        }
+
+        .l2 {
+            margin-left: 40px;
+        }
+
+        .l3 {
+            margin-left: 60px;
+        }
+
+        #test, #test div, #git {
+            border: solid 1px #000000;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">name</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                </ul>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+            </div><!--/.navbar-collapse -->
+        </div>
+    </nav>
+    <div class="container">
+        <hr style="margin-top: 60px;" />
+        <form>
+
+            <div class="row">
+                <div class="col-lg-7 form-inline">
+                    <button ng-click="ctrl.generate(ctrl.testDataLength)" class="form-control">generate</button>
+                    <input type="text" ng-model="ctrl.testDataLength" class="form-control" />
+                    <button ng-click="ctrl.sort(ctrl.sortField)" class="form-control">sort</button>
+                    <select ng-model="ctrl.sortField" class="form-control">
+                        <option value="id">id</option>
+                        <option value="name">name</option>
+                        <option value="number">number</option>
+                    </select>
+                    <button  ng-click="ctrl.renderGit(300, 10)" class="form-control">git</button>
+                </div>
+                <div class="col-lg-5">
+                    <drop-down 
+                               src="ctrl.testData" 
+                               length="'10'" 
+                               text-fieldname="'name'" 
+                               model="ctrl.model" 
+                               on-select="ctrl.onSelect(ctrl.model)"
+                               input="ctrl.input"
+                               on-inputchange="ctrl.onInputchange(ctrl.input)"></drop-down>
+                </div>
+            </div>
+        </form>
+        <hr />
+        <canvas id='canvas'>
+            Обновите браузер
+        </canvas>
+    <canvas id="git"></canvas>
+
+        <pre>
+location.path() = "{{ctrl.location.path()}}"
+ctrl.model = {{ctrl.model}}
+{{ctrl.gitIndex}}
+{{ctrl.gitEdges}}
+        </pre>
+        ng-view[<ng-view>view</ng-view>]ng-view
+        <a href="#/Book/Moby">Moby</a>
+        <a href="#/home">home</a>
+        <footer>
+            <p>&copy; VAsoft 2016</p>
+        </footer>
+    </div> <!-- /container -->
+    <script id="tmpl" type="text/ng-template">
+        <span ng-click="ctrl.treeOpen(item.id)">{{item.nm}}[{{item.idp}}]({{item.level}})</span>
+        <ul ng-if="ctrl.tree.branches[item.id] && ctrl.tree.branches[item.id].opened">
+            <li ng-repeat="item in ctrl.tree.branches[item.id].items" ng-include="'tmpl'"></li>
+        </ul>
+    </script>
+
+    <script src="/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/ie10-viewport-bug-workaround.js"></script>
+
+    <script src="/Scripts/angular.min.js"></script>
+    <script src="/Scripts/angular-sanitize.min.js"></script>
+    <script src="Scripts/angular-route.min.js"></script>
+    <script src="/app/app.js"></script>
+    <script src="/app/route.js"></script>
+    <script src="app/component.js"></script>
+    <script src="app/Modules/data.js"></script>
+    <script src="app/Modules/dropDown.js"></script>
+    <script src="app/treeService.js"></script>
+    <script>angular.bootstrap("html", ['app']);</script>
+</body>
+</html>
