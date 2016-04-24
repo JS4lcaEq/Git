@@ -4,48 +4,6 @@
 
     /*  */
     function gitService($http) {
-        var gitLog = {
-            "546aab1fccd3ffa3d1b71c6f8aac975f28b86d12": {
-                "HASH": "546aab1fccd3ffa3d1b71c6f8aac975f28b86d12", "PARENTS": ["8bd3000b7cbf427088d49f9ea270e4da804987e3"],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "2016-04-20", "NOTES": "", "DATE": "Wed, 20 Apr 2016 13:53:31 +0300"
-            },
-            "8bd3000b7cbf427088d49f9ea270e4da804987e3": {
-                "HASH": "8bd3000b7cbf427088d49f9ea270e4da804987e3", "PARENTS": ["46a75cb851ff2a5073a83bc32ba30ffc8e92ebd8", "89e86c9e34e0078a99c61a91f612cc054d7b6051"],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "Merge branch 'new' of https://github.com/lexnekr/gittest", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:43:43 +0300"
-            },
-            "46a75cb851ff2a5073a83bc32ba30ffc8e92ebd8": {
-                "HASH": "46a75cb851ff2a5073a83bc32ba30ffc8e92ebd8", "PARENTS": ["bc39def9e58be49ad58252d14bf362b264b3ec5b", "94adc3e354412a120fda3084805adebc2c2010a9"],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "Merge branch 'new' of https://github.com/lexnekr/gittest", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:39:21 +0300"
-            },
-            "bc39def9e58be49ad58252d14bf362b264b3ec5b": {
-                "HASH": "bc39def9e58be49ad58252d14bf362b264b3ec5b", "PARENTS": ["6761cb10aca715574dd0d3ce4e56f3392997f40a", "ad60e40c03c9addaf30d50ebec866bc0902d8feb"],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "Merge branch 'master' of https://github.com/lexnekr/gittest", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:29:41 +0300"
-            },
-            "6761cb10aca715574dd0d3ce4e56f3392997f40a": {
-                "HASH": "6761cb10aca715574dd0d3ce4e56f3392997f40a", "PARENTS": ["cf5297547bc2f985429cf410c63a40742ec1ea2b"],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "2016-04-19", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:25:31 +0300"
-            },
-            "ad60e40c03c9addaf30d50ebec866bc0902d8feb": {
-                "HASH": "ad60e40c03c9addaf30d50ebec866bc0902d8feb", "PARENTS": ["cf5297547bc2f985429cf410c63a40742ec1ea2b"],
-                "AUTHOR_NAME": "lexnekr", "SUBJECT": "README.md", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:25:25 +0300"
-            },
-            "89e86c9e34e0078a99c61a91f612cc054d7b6051": {
-                "HASH": "89e86c9e34e0078a99c61a91f612cc054d7b6051", "PARENTS": ["94adc3e354412a120fda3084805adebc2c2010a9"],
-                "AUTHOR_NAME": "Aleksey Zadoiniy", "SUBJECT": "ещё изменения в новой ветке отдельные от основной ветке (где уже есть мердж с новой веткой)", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:43:16 +0400"
-            },
-            "94adc3e354412a120fda3084805adebc2c2010a9": {
-                "HASH": "94adc3e354412a120fda3084805adebc2c2010a9", "PARENTS": [],
-                "AUTHOR_NAME": "Aleksey Zadoiniy", "SUBJECT": "new branch", "NOTES": "", "DATE": "Tue, 19 Apr 2016 14:36:25 +0400"
-            },
-            "cf5297547bc2f985429cf410c63a40742ec1ea2b": {
-                "HASH": "cf5297547bc2f985429cf410c63a40742ec1ea2b", "PARENTS": ["a8f3a60ea02ec086b3826c598eec0ffdcd0df14f"],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "2016-04-15", "NOTES": "", "DATE": "Fri, 15 Apr 2016 18:15:22 +0300"
-            },
-            "a8f3a60ea02ec086b3826c598eec0ffdcd0df14f": {
-                "HASH": "a8f3a60ea02ec086b3826c598eec0ffdcd0df14f", "PARENTS": [],
-                "AUTHOR_NAME": "ALEKSEY ZADOINIY", "SUBJECT": "1st commit", "NOTES": "", "DATE": "Fri, 15 Apr 2016 18:11:51 +0300"
-            }
-        };
 
         this.data = {};
         this.index = {}
@@ -58,7 +16,7 @@
                   self.data = response.data;
                   self.setIndex();
                   self.setEdges();
-                  //console.log(self.data);
+                  self.iniLine();
               }, function (response) {
 
               });
@@ -72,7 +30,7 @@
             var i = 0;
             for (var key in self.data) {
                 self.index[key] = i;
-                self.index[key].index = i;
+                self.data[key].index = i;
                 i++;
             }
         };
@@ -89,6 +47,21 @@
                     self.edges.push([i, self.index[parentKey]]);
                 }
                 i++;
+            }
+        };
+
+        this.iniLine = function () {
+            var self = this;
+            for (var key in self.data) {
+                var item = self.data[key];
+                //console.log(item);
+                if (item.PARENTS.length > 0) {
+                    var parentKey = item.PARENTS[0];
+                    console.log(item.HASH, parentKey);
+                    item.line = self.index[parentKey];
+                } else {
+                    item.line = 0;
+                }
             }
         };
 

@@ -8,7 +8,7 @@
 
         function link(scope, element, attrs) {
 
-            var elements = { canvas: element.find("canvas").get(0) };
+            var elements = { canvas: element.find("canvas").get(0), manual: element.find(".manual") };
 
             function getContext() {
                 var ctx = elements.canvas.getContext('2d');
@@ -47,12 +47,9 @@
                     }
                 }
 
-                for (var i = 0; i < scope.edges.length; i++) {
-                    var edge = scope.edges[i];
-                    console.log(edge);
-                    ctx.fillStyle = "#d0d";
-                    ctx.fillRect(stepWidth * edge[1], stepWidth * edge[0], stepWidth - 1, stepWidth - 1);
-                }
+                elements.manual.width(width);
+                elements.manual.height(width);
+
 
                 ctx.fillStyle = "#000";
                 ctx.font = "bold 12px sans-serif";
@@ -60,66 +57,13 @@
 
             }
 
+            scope.click = function (y, x) {
+                console.log(y, x);
+            };
 
 
 
 
-            
-
-            //directiveItems.push({ index: directiveItems.length });
-
-            //scope.items = directiveItems;
-
-            //var current = {
-
-            //};
-
-
-
-            //elements.input.on("keyup", function () {
-            //    if (current.intervals.input) {
-            //        $interval.cancel(current.intervals.input);
-            //    }
-            //    current.intervals.input = $interval(function () {
-            //        scope.input = elements.input.val();
-            //        if (scope.onInputchange != undefined && scope.onInputchange) {
-            //            $interval(function () {
-            //                scope.onInputchange();
-            //                console.log("keyPress");
-            //            }, 0, 1);
-            //        }
-            //    }, 800, 1);
-            //});
-
-
-
-
-
-            //element.on("click", function () {
-            //    current.triggers.elementClick = true;
-            //});
-
-
-
-            //scope.$watch("length", function (a, b) {
-            //    current.length = 1 * a;
-            //    setDropdownMenuLength(a);
-            //    console.log("length", a, b);
-            //});
-
-            //scope.$watch("src", function (a, b) {
-            //    current.k = (scope.src.length - scope.length) / (2000 - current.dropdownMenuHeight);
-            //    current.startIndex = 0;
-            //    elements.scrollBox.scrollTop(0);
-            //    if (scope.styles.dropdownMenu.height == "auto") {
-            //        $interval(function () {
-            //            setDataWindow(0);
-            //        }, 0, 1);
-            //    } else {
-            //        setDataWindow(0);
-            //    }
-            //    console.log(current.k);
-            //});
 
         }
         return {
@@ -127,8 +71,12 @@
             scope: {
 
             },
-            template: '<canvas></canvas>' +
-                '<pre>{{data}} \n {{index}} \n {{edges}}</pre>'
+            template: '' +
+                '<div class="manual"> \n' +
+                '   <div ng-repeat="item in data" class="line"> \n' +
+                '       <div ng-repeat="subitem in data" class="time" ng-click="click(item.index, subitem.index)"></div> \n' +
+                '   </div> \n' +
+                '</div> \n <canvas></canvas>  <pre>{{data}} \n {{index}} \n {{edges}}</pre>'
         };
 
     }
