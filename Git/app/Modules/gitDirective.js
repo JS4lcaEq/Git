@@ -5,6 +5,13 @@
     function gitDirective($document, $interval, gitService) {
         var directiveItems = [];
 
+        var cels = {};
+
+        cels.render = {};
+
+        cels.render.empty = function (x, y) {
+
+        };
 
         function link(scope, element, attrs) {
 
@@ -20,10 +27,21 @@
                 elements.canvas.width = width;
             }
 
-            scope.nodes =
-                Array(10);
+            function newCel(x, y) {
+                var cel = { x: x, y: y, backGroundColor: "#ccc", isHover: false};
+
+            }
+
+            scope.nodes = Array(10);
+
+            element.find("canvas").on("mousemove", function (event) {
+                scope.$apply(function () {
+                    scope.x = Math.floor(event.offsetX / 40);
+                    scope.y = Math.floor(event.offsetY / 40);
+                });
 
 
+            });
             //var promise = gitService.loadData("data.json");
 
             //promise.then(function () {
@@ -75,11 +93,12 @@
 
             },
             template: '' +
-                '<div class="manual"> \n' +
-                '   <div ng-repeat="item in [0,1,2,3,4,5,6,7,8,9]" class="line"> \n' +
-                '       <div ng-repeat="subitem in [0,1,2,3,4,5,6,7,8,9]" class="time" ng-click="click(item, subitem)"></div> \n' +
-                '   </div> \n' +
-                '</div> \n <canvas></canvas>  <pre>{{nodes}} \n {{index}} \n {{edges}}</pre>'
+                //'<div class="manual"> \n' +
+                //'   <div ng-repeat="item in [0,1,2,3,4,5,6,7,8,9]" class="line"> \n' +
+                //'       <div ng-repeat="subitem in [0,1,2,3,4,5,6,7,8,9]" class="time" ng-click="click(item, subitem)"></div> \n' +
+                //'   </div> \n' +
+                //'</div> \n ' +
+                '<canvas></canvas>  <pre>{{nodes}} \n {{index}} \n {{edges}} \n {{x}} / {{y}}</pre>'
         };
 
     }
