@@ -45,12 +45,31 @@
                 scope.$apply(function () {
                     var x = Math.floor(event.offsetX / 40);
                     var y = Math.floor(event.offsetY / 40);
-                    if (current.cel) {
-                        if(current.cel  )
+                    if (x > -1 && x < 10 && y > -1 && y < 10) {
+                        if (current.cel) {
+                            if (current.cel.x != x || current.cel.y != y) {
+                                cels[current.cel.x][current.cel.y].fill("#eee");
+                                cels[x][y].fill("#efe");
+                                //console.log(x, y);
+                            }
+
+                        } else {
+                            cels[x][y].fill("#efe");
+                            //console.log(x, y);
+                        }
+                        current.cel = { x: x, y: y };
                     }
-                    
                 });
             });
+
+            element.find("canvas").on("mouseout", function (event) {
+                if (current.cel) {
+                    cels[current.cel.x][current.cel.y].fill("#eee");
+                    current.cel = null
+                    //console.log(x, y);
+                }
+            });
+
             //var promise = gitService.loadData("data.json");
 
             //promise.then(function () {
