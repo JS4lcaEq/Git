@@ -5,7 +5,7 @@
     function gitDirective($document, $interval, gitService) {
         var directiveItems = [];
 
-        var cels = {};
+        var cels = [];
 
         cels.render = {};
 
@@ -17,6 +17,8 @@
 
             var elements = { canvas: element.find("canvas").get(0), manual: element.find(".manual") };
 
+            var current = { cel: null };
+
             function getContext() {
                 var ctx = elements.canvas.getContext('2d');
                 return ctx;
@@ -27,20 +29,27 @@
                 elements.canvas.width = width;
             }
 
-            function newCel(x, y) {
-                var cel = { x: x, y: y, backGroundColor: "#ccc", isHover: false};
-
+            function newCel(x, y, width) {
+                var cel = { x: x, y: y, backGroundColor: "#ddd", isHover: false, width: width };
+                cel.fill = function (color) {
+                    var ctx = getContext();
+                    ctx.fillStyle = color;
+                    ctx.fillRect(cel.x * cel.width, cel.y * cel.width, cel.width - 1, cel.width - 1);
+                };
+                return cel;
             }
 
             scope.nodes = Array(10);
 
             element.find("canvas").on("mousemove", function (event) {
                 scope.$apply(function () {
-                    scope.x = Math.floor(event.offsetX / 40);
-                    scope.y = Math.floor(event.offsetY / 40);
+                    var x = Math.floor(event.offsetX / 40);
+                    var y = Math.floor(event.offsetY / 40);
+                    if (current.cel) {
+                        if(current.cel  )
+                    }
+                    
                 });
-
-
             });
             //var promise = gitService.loadData("data.json");
 
@@ -60,9 +69,10 @@
                 //ctx.fillText("git", 20, 20);
 
                 for (var i = 0; i < length; i++) {
+                    cels[i] = [];
                     for (var n = 0; n < length; n++) {
-                        ctx.fillStyle = "#ddd";
-                        ctx.fillRect(i * stepWidth, n * stepWidth, stepWidth - 1, stepWidth - 1);
+                        cels[i][n] = newCel(i, n, 40);
+                        cels[i][n].fill("#eee");
                     }
                 }
 
