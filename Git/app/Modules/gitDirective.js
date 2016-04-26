@@ -5,15 +5,9 @@
     function gitDirective($document, $interval, gitService) {
         var directiveItems = [];
 
-        var cels = [];
-
-        cels.render = {};
-
-        cels.render.empty = function (x, y) {
-
-        };
-
         function link(scope, element, attrs) {
+
+            scope.cels = [];
 
             var elements = { canvas: element.find("canvas").get(0), manual: element.find(".manual") };
 
@@ -30,11 +24,19 @@
             }
 
             function newCel(x, y, width) {
-                var cel = { x: x, y: y, backGroundColor: "#ddd", isHover: false, width: width };
+                var self = this;
+                var cel = { x: x, y: y, isHover: false, width: width, link: false };
                 cel.fill = function (color) {
                     var ctx = getContext();
                     ctx.fillStyle = color;
                     ctx.fillRect(cel.x * cel.width, cel.y * cel.width, cel.width - 1, cel.width - 1);
+                };
+                cel.render = function () {
+                    if (!cel.link && !cel.isHover) cel.fill("#eee");
+                    if (cel.link && !cel.isHover) cel.fill("#0f0");
+                    if (!cel.link && cel.isHover) cel.fill("#dfd");
+                    if (cel.link && cel.isHover) cel.fill("#0d0");
+                    
                 };
                 return cel;
             }
@@ -48,24 +50,38 @@
                     if (x > -1 && x < 10 && y > -1 && y < 10) {
                         if (current.cel) {
                             if (current.cel.x != x || current.cel.y != y) {
-                                cels[current.cel.x][current.cel.y].fill("#eee");
-                                cels[x][y].fill("#efe");
+                                scope.cels[current.cel.x][current.cel.y].isHover = false;
+                                scope.cels[x][y].isHover = true;
                                 //console.log(x, y);
+                                scope.cels[current.cel.x][current.cel.y].render();
                             }
 
                         } else {
-                            cels[x][y].fill("#efe");
+                            scope.cels[x][y].isHover = true;
+                            
                             //console.log(x, y);
                         }
+
+                        scope.cels[x][y].render();
                         current.cel = { x: x, y: y };
                     }
                 });
             });
 
+            element.find("canvas").on("click", function (event) {
+                scope.$apply(function () {
+                    scope.cels[current.cel.x][current.cel.y].link = !scope.cels[current.cel.x][current.cel.y].link;
+                    scope.cels[current.cel.x][current.cel.y].render();
+                });
+            });
+
             element.find("canvas").on("mouseout", function (event) {
                 if (current.cel) {
-                    cels[current.cel.x][current.cel.y].fill("#eee");
-                    current.cel = null
+                    scope.$apply(function () {
+                        scope.cels[current.cel.x][current.cel.y].isHover = false;
+                        scope.cels[current.cel.x][current.cel.y].render();
+                        current.cel = null
+                    });
                     //console.log(x, y);
                 }
             });
@@ -88,10 +104,10 @@
                 //ctx.fillText("git", 20, 20);
 
                 for (var i = 0; i < length; i++) {
-                    cels[i] = [];
+                    scope.cels[i] = [];
                     for (var n = 0; n < length; n++) {
-                        cels[i][n] = newCel(i, n, 40);
-                        cels[i][n].fill("#eee");
+                        scope.cels[i][n] = newCel(i, n, 40);
+                        scope.cels[i][n].fill("#eee");
                     }
                 }
 
@@ -127,7 +143,7 @@
                 //'       <div ng-repeat="subitem in [0,1,2,3,4,5,6,7,8,9]" class="time" ng-click="click(item, subitem)"></div> \n' +
                 //'   </div> \n' +
                 //'</div> \n ' +
-                '<canvas></canvas>  <pre>{{nodes}} \n {{index}} \n {{edges}} \n {{x}} / {{y}}</pre>'
+                '<canvas></canvas>  <pre>{{cels}} \n  {{current}}</pre>'
         };
 
     }
