@@ -7,20 +7,3 @@ canvas {
         cursor:pointer;
     }
 
-.manual {
-    /*background-color: rgba(255, 0, 0, 0.10);*/
-    border: solid 1px rgba(255, 0, 0, 0.50);
-    position:absolute;
-}
-
-.time { 
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 255, 0, 0.02);
-    float:left;
-}
-
-.time:hover { 
-    background-color: rgba(0, 255, 0, 0.2);
-    cursor: pointer;
-}
